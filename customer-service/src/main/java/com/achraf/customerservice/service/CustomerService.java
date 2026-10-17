@@ -2,6 +2,8 @@ package com.achraf.customerservice.service;
 
 import com.achraf.customerservice.entities.Customer;
 import com.achraf.customerservice.repository.CustomerRepository;
+import org.springaicommunity.mcp.annotation.McpTool;
+import org.springaicommunity.mcp.annotation.McpToolParam;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,15 +16,19 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
+    @McpTool(description = "Get all customers")
     public List<Customer> getAllCustomers(){
         return customerRepository.findAll();
     }
 
-    public Customer getCustomerById(Long id){
-        return customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found"));
+    @McpTool(description = "Find a customer by id")
+    public Customer getCustomerById(@McpToolParam(description = "The customer id") Long id){
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
     }
 
-    public Customer saveCustomer(Customer customer){
+    @McpTool(description = "Save a new customer")
+    public Customer saveCustomer(@McpToolParam(description = "The Customer to save (name, email)") Customer customer){
         return customerRepository.save(customer);
     }
 
